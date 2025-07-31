@@ -1,35 +1,16 @@
-const express = require('express');
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
+const chromePath = process.env.PUPPETEER_EXECUTABLE_PATH;
 
-const app = express();
-app.use(express.json());
+(async () => {
+  const browser = await puppeteer.launch({
+    executablePath: chromePath,
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
 
-app.post('/crawl', async (req, res) => {
-  const { url } = req.body;
+  const page = await browser.newPage();
+  await page.goto('https://example.com');
+  console.log(await page.title());
 
-  if (!url) {
-    return res.status(400).send({ error: 'URL이 필요합니다' });
-  }
-
-  try {
-    const browser = await puppeteer.launch({
-      args: ['--no-sandbox'],
-      headless: 'new',
-    });
-
-    const page = await browser.newPage();
-    await page.goto(url, { waitUntil: 'networkidle2' });
-
-    const title = await page.title();
-    await browser.close();
-
-    res.send({ title });
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`서버 실행 중! http://localhost:${PORT}`);
-});
+  await browser.close();
+})();
