@@ -1,16 +1,14 @@
-const puppeteer = require('puppeteer-core');
-const chromePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+const puppeteer = require("puppeteer");
 
 (async () => {
   const browser = await puppeteer.launch({
-    executablePath: chromePath,
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    headless: "new", // 최신 버전에서 권장되는 설정
+    args: ['--no-sandbox', '--disable-setuid-sandbox'] // Render 환경에서 필수
   });
 
   const page = await browser.newPage();
-  await page.goto('https://example.com');
-  console.log(await page.title());
+  await page.goto("https://example.com");
 
+  // ...
   await browser.close();
 })();
