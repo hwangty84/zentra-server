@@ -1,14 +1,11 @@
-const puppeteer = require('puppeteer');
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
 
-(async () => {
-  const browser = await puppeteer.launch({
-    headless: 'new',
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  });
+app.get('/', async (req, res) => {
+  res.send('Puppeteer server is running!');
+});
 
-  const page = await browser.newPage();
-  await page.goto('https://example.com');
-  console.log(await page.title());
-
-  await browser.close();
-})();
+app.listen(port, '0.0.0.0', () => {
+  console.log(`✅ Server is running on http://0.0.0.0:${port}`);
+});
