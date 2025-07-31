@@ -2,14 +2,14 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// 기존 루트 라우터
+// 루트 엔드포인트
 app.get('/', async (req, res) => {
   res.send('Puppeteer server is running!');
 });
 
-// ✅ 추가: 테스트용 라우터
+// ✅ 테스트용 엔드포인트 추가
 app.get('/test', async (req, res) => {
-  res.json({ status: 'ok', message: 'Test API 연결 성공!' });
+  res.json({ success: true, message: 'Test endpoint works!' });
 });
 
 // 서버 실행
